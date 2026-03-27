@@ -29,6 +29,18 @@ export default function TextToVideoGenerator() {
     }
   };
 
+  const handlePromptChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setPrompt((e.target as HTMLTextAreaElement).value);
+  };
+
+  const handleDurationChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setDuration(Number((e.target as HTMLSelectElement).value));
+  };
+
+  const handleResolutionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setResolution((e.target as HTMLSelectElement).value);
+  };
+
   return (
     <div className="max-w-4xl mx-auto">
       <h1 className="text-4xl font-bold text-white mb-8">Text to Video</h1>
@@ -40,7 +52,7 @@ export default function TextToVideoGenerator() {
           </label>
           <textarea
             value={prompt}
-            onChange={(e) => setPrompt(e.target.value)}
+            onChange={handlePromptChange}
             className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#E94560]"
             rows={4}
             placeholder="A cat walking in the garden, realistic, high quality, smooth motion..."
@@ -55,7 +67,7 @@ export default function TextToVideoGenerator() {
             </label>
             <select
               value={duration}
-              onChange={(e) => setDuration(Number(e.target.value))}
+              onChange={handleDurationChange}
               className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-[#E94560]"
             >
               <option value={5}>5 seconds</option>
@@ -70,7 +82,7 @@ export default function TextToVideoGenerator() {
             </label>
             <select
               value={resolution}
-              onChange={(e) => setResolution(e.target.value)}
+              onChange={handleResolutionChange}
               className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-[#E94560]"
             >
               <option value="1280*720">720p (HD)</option>

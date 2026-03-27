@@ -10,10 +10,17 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"],
-      "@novai/ui": ["../../packages/ui/src"],
-      "@novai/types": ["../../packages/types/src"]
-    }
+      "@/*": [
+        "./*"
+      ],
+      "@novai/ui": [
+        "../../packages/ui/src"
+      ],
+      "@novai/types": [
+        "../../packages/types/src"
+      ]
+    },
+    "incremental": true
   },
   "include": [
     "**/*.ts",

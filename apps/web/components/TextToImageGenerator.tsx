@@ -29,6 +29,18 @@ export default function TextToImageGenerator() {
     }
   };
 
+  const handlePromptChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setPrompt((e.target as HTMLTextAreaElement).value);
+  };
+
+  const handleVariationsChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setVariations(Number((e.target as HTMLSelectElement).value));
+  };
+
+  const handleResolutionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setResolution((e.target as HTMLSelectElement).value);
+  };
+
   return (
     <div className="max-w-4xl mx-auto">
       <h1 className="text-4xl font-bold text-white mb-8">Text to Image</h1>
@@ -40,7 +52,7 @@ export default function TextToImageGenerator() {
           </label>
           <textarea
             value={prompt}
-            onChange={(e) => setPrompt(e.target.value)}
+            onChange={handlePromptChange}
             className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#E94560]"
             rows={4}
             placeholder="A cute cat playing with a ball, photorealistic, high quality..."
@@ -55,7 +67,7 @@ export default function TextToImageGenerator() {
             </label>
             <select
               value={variations}
-              onChange={(e) => setVariations(Number(e.target.value))}
+              onChange={handleVariationsChange}
               className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-[#E94560]"
             >
               <option value={1}>1 Image</option>
@@ -71,7 +83,7 @@ export default function TextToImageGenerator() {
             </label>
             <select
               value={resolution}
-              onChange={(e) => setResolution(e.target.value)}
+              onChange={handleResolutionChange}
               className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-[#E94560]"
             >
               <option value="512*512">512x512</option>

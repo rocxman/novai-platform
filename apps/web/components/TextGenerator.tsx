@@ -27,9 +27,23 @@ export default function TextGenerator() {
     }
   };
 
+  const handlePromptChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setPrompt((e.target as HTMLTextAreaElement).value);
+  };
+
+  const handleTemplateChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setTemplate((e.target as HTMLSelectElement).value);
+  };
+
+  const handleToneChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setTone((e.target as HTMLSelectElement).value);
+  };
+
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(result);
-    alert('Copied to clipboard!');
+    if (typeof window !== 'undefined' && typeof navigator !== 'undefined') {
+      (navigator as any).clipboard.writeText(result);
+      if (typeof alert !== 'undefined') alert('Copied to clipboard!');
+    }
   };
 
   return (
@@ -43,7 +57,7 @@ export default function TextGenerator() {
           </label>
           <textarea
             value={prompt}
-            onChange={(e) => setPrompt(e.target.value)}
+            onChange={handlePromptChange}
             className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#E94560]"
             rows={4}
             placeholder="Write a video script about AI technology..."
@@ -58,7 +72,7 @@ export default function TextGenerator() {
             </label>
             <select
               value={template}
-              onChange={(e) => setTemplate(e.target.value)}
+              onChange={handleTemplateChange}
               className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-[#E94560]"
             >
               <option value="video_script">Video Script</option>
@@ -74,7 +88,7 @@ export default function TextGenerator() {
             </label>
             <select
               value={tone}
-              onChange={(e) => setTone(e.target.value)}
+              onChange={handleToneChange}
               className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-[#E94560]"
             >
               <option value="professional">Professional</option>
