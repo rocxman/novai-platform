@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: novai-production
+  labels:
+    name: production
+    istio-injection: disabled
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: novai-staging
+  labels:
+    name: staging
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: novai-development
+  labels:
+    name: development

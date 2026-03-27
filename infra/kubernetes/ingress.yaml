@@ -1,0 +1,53 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: novai-ingress
+  namespace: novai-production
+  annotations:
+    kubernetes.io/ingress.class: "gce"
+    kubernetes.io/ingress.global-static-ip-name: "novai-global-ip"
+    networking.gke.io/managed-certificates: "novai-certificate"
+    networking.gke.io/v1beta1.FrontendConfig: "novai-frontend-config"
+spec:
+  rules:
+    - host: api.novaai.id
+      http:
+        paths:
+          - path: /*
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: api-gateway
+                port:
+                  number: 80
+    - host: novaai.id
+      http:
+        paths:
+          - path: /*
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: web-frontend
+                port:
+                  number: 80
+---
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: novai-certificate
+  namespace: novai-production
+spec:
+  domains:
+    - novaai.id
+    - api.novaai.id
+    - www.novaai.id
+---
+apiVersion: networking.gke.io/v1beta1
+kind: FrontendConfig
+metadata:
+  name: novai-frontend-config
+  namespace: novai-production
+spec:
+  redirectToHttps:
+    enabled: true
+    responseCodeName: MOVED_PERMANENTLY_DEFAULT

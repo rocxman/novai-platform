@@ -1,0 +1,52 @@
+apiVersion: monitoring.coreos.com/v1
+kind: Prometheus
+metadata:
+  name: novai-prometheus
+  namespace: novai-production
+spec:
+  replicas: 2
+  version: v2.45.0
+  serviceAccountName: prometheus
+  serviceMonitorSelector:
+    matchLabels:
+      app: novai
+  resources:
+    requests:
+      memory: 512Mi
+      cpu: 200m
+    limits:
+      memory: 1Gi
+      cpu: 500m
+  retention: 15d
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: api-gateway-monitor
+  namespace: novai-production
+  labels:
+    app: novai
+spec:
+  selector:
+    matchLabels:
+      app: api-gateway
+  endpoints:
+    - port: http
+      interval: 30s
+      path: /metrics
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: generation-service-monitor
+  namespace: novai-production
+  labels:
+    app: novai
+spec:
+  selector:
+    matchLabels:
+      app: generation-service
+  endpoints:
+    - port: http
+      interval: 30s
+      path: /metrics
