@@ -1,53 +1,112 @@
 import { FastifyPluginAsync } from 'fastify';
 
 export const generationRoutes: FastifyPluginAsync = async (fastify) => {
+  const GENERATION_SERVICE_URL = process.env.GENERATION_SERVICE_URL || 'http://localhost:8000';
+
   // POST /generate/text-to-video
   fastify.post('/text-to-video', async (request, reply) => {
-    const { prompt, duration, resolution, aspectRatio, style } = request.body as {
+    const { prompt, duration, resolution, aspectRatio, style, negativePrompt } = request.body as {
       prompt: string;
       duration: number;
       resolution: string;
       aspectRatio: string;
       style: string;
+      negativePrompt?: string;
     };
     
-    // TODO: Implement text-to-video generation
+    // Call generation service
+    const response = await fetch(`${GENERATION_SERVICE_URL}/generate/video`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        prompt,
+        duration,
+        resolution: resolution === '4k' ? '1920*1080' : resolution === '1080p' ? '1280*720' : '1280*720',
+        negative_prompt: negativePrompt,
+      }),
+    });
+    
+    if (!response.ok) {
+      throw new Error('Generation failed');
+    }
+    
+    const result = await response.json();
     
     reply.code(202).send({
-      job_id: 'uuid',
-      status: 'queued',
-      estimated_wait_seconds: 60,
+      job_id: 'job_' + Date.now(),
+      status: 'completed',
+      result: result.result,
       credits_to_be_used: 10,
-      stream_url: '/api/v1/generate/stream/job-id',
     });
   });
 
   // POST /generate/text-to-image
   fastify.post('/text-to-image', async (request, reply) => {
-    const { prompt, variations, resolution, style } = request.body as {
+    const { prompt, variations, resolution, style, negativePrompt } = request.body as {
       prompt: string;
       variations: number;
       resolution: string;
       style: string;
+      negativePrompt?: string;
     };
     
-    // TODO: Implement text-to-image generation
+    // Call generation service
+    const response = await fetch(`${GENERATION_SERVICE_URL}/generate/image`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        prompt,
+        variations: variations || 1,
+        resolution: resolution || '1024*1024',
+        style,
+        negative_prompt: negativePrompt,
+      }),
+    });
     
-    reply.code(202).send({
-      job_id: 'uuid',
-      status: 'queued',
-      estimated_wait_seconds: 30,
-      credits_to_be_used: 6,
+    if (!response.ok) {
+      throw new Error('Generation failed');
+    }
+    
+    const result = await response.json();
+    
+    reply.send({
+      job_id: 'job_' + Date.now(),
+      status: 'completed',
+      results: result.results,
+      credits_to_be_used: variations * 2,
     });
   });
 
   // POST /generate/image-to-video
   fastify.post('/image-to-video', async (request, reply) => {
-    // TODO: Implement image-to-video generation
+    const { imageUrl, motionPrompt, duration } = request.body as {
+      imageUrl: string;
+      motionPrompt: string;
+      duration: number;
+    };
+    
+    // Call generation service
+    const response = await fetch(`${GENERATION_SERVICE_URL}/generate/image-to-video`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        image_url: imageUrl,
+        motion_prompt: motionPrompt,
+        duration: duration || 5,
+      }),
+    });
+    
+    if (!response.ok) {
+      throw new Error('Generation failed');
+    }
+    
+    const result = await response.json();
     
     reply.code(202).send({
-      job_id: 'uuid',
-      status: 'queued',
+      job_id: 'job_' + Date.now(),
+      status: 'completed',
+      result: result.result,
+      credits_to_be_used: 7,
     });
   });
 
@@ -59,16 +118,31 @@ export const generationRoutes: FastifyPluginAsync = async (fastify) => {
       tone: string;
     };
     
-    // TODO: Implement text generation
+    // Call generation service
+    const response = await fetch(`${GENERATION_SERVICE_URL}/generate/text`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        prompt,
+        template,
+        tone,
+      }),
+    });
     
-    reply.send({ result: '' });
+    if (!response.ok) {
+      throw new Error('Generation failed');
+    }
+    
+    const result = await response.json();
+    
+    reply.send({ result: result.result, model: result.model });
   });
 
   // GET /generate/jobs/:jobId
   fastify.get('/jobs/:jobId', async (request, reply) => {
     const { jobId } = request.params as { jobId: string };
     
-    // TODO: Get job status
+    // TODO: Get job status from database
     
     reply.send({
       job_id: jobId,
@@ -79,16 +153,8 @@ export const generationRoutes: FastifyPluginAsync = async (fastify) => {
 
   // GET /generate/jobs
   fastify.get('/jobs', async (request, reply) => {
-    // TODO: List user's jobs
+    // TODO: List user's jobs from database
     
     reply.send({ jobs: [] });
-  });
-
-  // GET /generate/stream/:jobId
-  fastify.get('/stream/:jobId', async (request, reply) => {
-    // TODO: Implement SSE stream
-    
-    reply.header('Content-Type', 'text/event-stream');
-    reply.send('event: job_update\ndata: {"status": "processing"}\n\n');
   });
 };
