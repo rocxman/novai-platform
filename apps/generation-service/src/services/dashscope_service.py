@@ -62,11 +62,12 @@ class DashScopeService:
 
 class QwenImageService:
     """Text to Image generation using Qwen-Image."""
-    
+
     def __init__(self):
         self.dashscope = DashScopeService()
         self.model = settings.qwen_image_model
         self.endpoint = "/api/v1/services/aigc/text2image/image-synthesis"
+        self.task_endpoint = "/api/v1/tasks"
     
     async def generate(
         self,
@@ -104,7 +105,7 @@ class QwenImageService:
         # Poll for completion
         final_result = await self.dashscope.poll_until_complete(
             task_id, 
-            self.endpoint.replace("image-synthesis", "tasks")
+            self.task_endpoint
         )
         
         if final_result["output"]["task_status"] != "SUCCEEDED":
