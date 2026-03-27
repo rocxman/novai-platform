@@ -9,7 +9,7 @@ class Settings(BaseSettings):
     debug: bool = False
     
     # Alibaba Cloud DashScope
-    dashscope_api_key: str = ""
+    dashscope_api_key: str = "sk-923407d300a844e08ed633a1be452b64"
     dashscope_region: str = "singapore"  # singapore, beijing, us
     
     # API Endpoints (auto-configured based on region)
@@ -47,7 +47,7 @@ class Settings(BaseSettings):
     oss_endpoint: str = "oss-ap-southeast-1.aliyuncs.com"
     
     # API
-    api_url: str = "http://localhost:8080"
+    api_url: str = "http://localhost:8000"
     
     class Config:
         env_file = ".env"
