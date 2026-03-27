@@ -91,18 +91,18 @@ async def test_text_generation():
 
 
 async def test_text_to_image():
-    """Test Qwen-Image-Max text to image generation."""
-    print("\n🎨 Testing Text to Image (Qwen-Image-Max - Best for Text Rendering)...")
+    """Test Qwen-Image-Plus text to image generation (verified working)."""
+    print("\n🎨 Testing Text to Image (Qwen-Image-Plus - Verified Working)...")
     print("=" * 50)
     
     try:
         async with httpx.AsyncClient(timeout=120.0) as client:
-            # Use qwen-image-max for best quality with text rendering
+            # Use qwen-image-plus - verified working with async
             create_response = await client.post(
                 f"{BASE_URL}/api/v1/services/aigc/text2image/image-synthesis",
                 headers={**HEADERS, "X-DashScope-Async": "enable"},
                 json={
-                    "model": "qwen-image-max",
+                    "model": "qwen-image-plus",
                     "input": {
                         "prompt": "A cute cat playing with a ball, photorealistic, high quality, detailed"
                     },
@@ -156,18 +156,18 @@ async def test_text_to_image():
 
 
 async def test_text_to_video():
-    """Test Wan2.6-i2v text to video generation (supports 15s ultra-long)."""
-    print("\n🎬 Testing Text to Video (Wan2.6-i2v - Latest 15s Ultra-Long)...")
+    """Test Wan2.6-T2V text to video generation (verified working)."""
+    print("\n🎬 Testing Text to Video (Wan2.6-T2V - Verified Working)...")
     print("=" * 50)
     
     try:
         async with httpx.AsyncClient(timeout=300.0) as client:
-            # Use wan2.6-i2v - latest model with 15s support
+            # Use wan2.6-t2v - verified working
             create_response = await client.post(
                 f"{BASE_URL}/api/v1/services/aigc/video-generation/video-synthesis",
                 headers={**HEADERS, "X-DashScope-Async": "enable"},
                 json={
-                    "model": "wan2.6-i2v",
+                    "model": "wan2.6-t2v",
                     "input": {
                         "prompt": "A cat walking in the garden, realistic, high quality, smooth motion"
                     },

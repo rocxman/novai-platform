@@ -24,14 +24,14 @@ class Settings(BaseSettings):
         return urls.get(self.dashscope_region, urls["singapore"])
     
     # AI Models - Alibaba Cloud (2026 Free Tier Optimized)
-    # Text to Image: Qwen-Image-Max (best for text rendering in images)
-    qwen_image_model: str = "qwen-image-max"
+    # Text to Image: Qwen-Image-Plus (stable async support)
+    qwen_image_model: str = "qwen-image-plus"
     
-    # Text to Video: Wan2.6-i2v (latest, supports 15s ultra-long)
-    wan_t2v_model: str = "wan2.6-i2v"
+    # Text to Video: Wan2.6-T2V (verified working)
+    wan_t2v_model: str = "wan2.6-t2v"
     
-    # Image to Video: Wan2.6-i2v (same model, maintains facial details)
-    wan_i2v_model: str = "wan2.6-i2v"
+    # Image to Video: Wan2.1-i2v (verified working)
+    wan_i2v_model: str = "wan2.1-i2v"
     
     # Text Generation: Qwen3-Max (flagship for complex tasks)
     qwen_text_model: str = "qwen3-max"
