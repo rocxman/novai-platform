@@ -1,0 +1,18 @@
+export const config = {
+  port: parseInt(process.env.PORT || '8080', 10),
+  appUrl: process.env.APP_URL || 'http://localhost:3000',
+  apiUrl: process.env.API_URL || 'http://localhost:8080',
+  databaseUrl: process.env.DATABASE_URL || '',
+  redisUrl: process.env.REDIS_URL || 'redis://localhost:6379',
+  jwtSecret: process.env.JWT_SECRET || 'dev-secret-key',
+  googleClientId: process.env.GOOGLE_CLIENT_ID || '',
+  googleClientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
+  googleAiApiKey: process.env.GOOGLE_AI_API_KEY || '',
+  vertexProjectId: process.env.VERTEX_AI_PROJECT_ID || '',
+  vertexLocation: process.env.VERTEX_AI_LOCATION || 'us-central1',
+  gcsBucket: process.env.GCS_BUCKET_NAME || '',
+  midtransServerKey: process.env.MIDTRANS_SERVER_KEY || '',
+  midtransClientKey: process.env.MIDTRANS_CLIENT_KEY || '',
+  midtransSandbox: process.env.MIDTRANS_SANDBOX === 'true',
+  logLevel: process.env.LOG_LEVEL || 'info',
+};

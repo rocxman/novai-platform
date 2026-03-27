@@ -1,0 +1,161 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  FREE_USER
+  PRO_USER
+  ENTERPRISE_USER
+  ADMIN
+  SUPERADMIN
+}
+
+enum JobStatus {
+  QUEUED
+  PROCESSING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+enum Plan {
+  FREE
+  STARTER
+  PRO
+  ENTERPRISE
+}
+
+model User {
+  id                String    @id @default(uuid())
+  email             String    @unique
+  name              String?
+  passwordHash      String?
+  googleId          String?   @unique
+  role              Role      @default(FREE_USER)
+  subscriptionPlan  Plan      @default(FREE)
+  avatarUrl         String?
+  emailVerified     Boolean   @default(false)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  credit            Credit?
+  transactions      Transaction[]
+  generationJobs    GenerationJob[]
+  assets            Asset[]
+  subscription      Subscription?
+  apiKeys           ApiKey[]
+
+  @@index([email])
+  @@index([googleId])
+}
+
+model Credit {
+  id         String   @id @default(uuid())
+  userId     String   @unique
+  balance    Int      @default(0)
+  reserved   Int      @default(0)
+  lastUpdated DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Transaction {
+  id            String   @id @default(uuid())
+  userId        String
+  amount        Decimal
+  type          String
+  creditDelta   Int
+  paymentMethod String?
+  status        String   @default("pending")
+  metadata      Json?
+  createdAt     DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([createdAt])
+  @@index([status])
+}
+
+model GenerationJob {
+  id          String    @id @default(uuid())
+  userId      String
+  jobType     String
+  status      JobStatus @default(QUEUED)
+  prompt      String
+  params      Json
+  resultUrl   String?
+  thumbnailUrl String?
+  creditsUsed Int?
+  errorMessage String?
+  createdAt   DateTime  @default(now())
+  completedAt DateTime?
+
+  user  User   @relation(fields: [userId], references: [id])
+  asset Asset?
+
+  @@index([userId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model Asset {
+  id         String   @id @default(uuid())
+  userId     String
+  jobId      String?  @unique
+  type       String
+  filename   String
+  gcsPath    String
+  cdnUrl     String
+  size       Int
+  duration   Float?
+  metadata   Json?
+  createdAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+  job  GenerationJob? @relation(fields: [jobId], references: [id])
+
+  @@index([userId])
+  @@index([jobId])
+}
+
+model Subscription {
+  id         String   @id @default(uuid())
+  userId     String   @unique
+  plan       Plan
+  status     String   @default("active")
+  startDate  DateTime @default(now())
+  endDate    DateTime
+  autoRenew  Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([status])
+}
+
+model ApiKey {
+  id          String   @id @default(uuid())
+  userId      String
+  keyHash     String   @unique
+  name        String
+  permissions Json
+  rateLimit   Int      @default(100)
+  lastUsed    DateTime?
+  createdAt   DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([keyHash])
+}
