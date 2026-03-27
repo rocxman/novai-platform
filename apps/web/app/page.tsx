@@ -16,7 +16,7 @@ export default function HomePage() {
           </p>
           <div className="flex gap-4 justify-center">
             <Link
-              href="/register"
+              href="/dashboard"
               className="bg-[#E94560] hover:bg-[#d63850] text-white px-8 py-4 rounded-lg font-semibold transition-all transform hover:scale-105"
             >
               Start Creating Free
@@ -58,7 +58,7 @@ export default function HomePage() {
       {/* Footer */}
       <footer className="border-t border-white/10 mt-20 py-8">
         <div className="container mx-auto px-4 text-center text-gray-400">
-          <p>© 2025 NOVA AI Platform. Powered by Google AI Studio.</p>
+          <p>© 2025 NOVA AI Platform. Powered by Alibaba Cloud DashScope.</p>
         </div>
       </footer>
     </main>
