@@ -1,118 +1,154 @@
 # NOVA AI Platform
-
-> AI-Powered Creative Generation Platform
+## AI-Powered Creative Generation Platform
 
 **Capabilities:** Text to Video • Text to Image • Image to Video • AI Text Generation
 
-## 🚀 Quick Start
+---
+
+## 🚀 QUICK START
+
+**API Key Already Configured!** ✅
 
 ```bash
-# Clone repository
+# Clone and test
 git clone https://github.com/rocxman/novai-platform.git
 cd novai-platform
-
-# Install dependencies
-npm install
-
-# Setup environment
-cp .env.example .env
-
-# Run development
-npm run dev
+./scripts/test-api.sh
 ```
 
-## 📦 Project Structure
+See [QUICK_START.md](./QUICK_START.md) for detailed instructions.
+
+---
+
+## 📦 WHAT'S INCLUDED
+
+### AI Models (Alibaba Cloud DashScope)
+| Model | Purpose | Status |
+|-------|---------|--------|
+| **Qwen-Image-2.0-Pro** | Text to Image | ✅ Configured |
+| **Wan2.6-T2V** | Text to Video | ✅ Configured |
+| **Wan2.1-I2V** | Image to Video | ✅ Configured |
+| **Qwen-Max** | Text Generation | ✅ Configured |
+
+### Infrastructure
+- ✅ Generation Service (Python FastAPI)
+- ✅ API Gateway (Node.js Fastify)
+- ✅ Frontend (Next.js 14)
+- ✅ Terraform (Alibaba Cloud)
+- ✅ Kubernetes Manifests
+
+---
+
+## 🛠️ TECH STACK
+
+**Frontend:** Next.js 14 • TypeScript • Tailwind CSS • shadcn/ui
+
+**Backend:** Node.js 20 • Fastify • Python 3.11 • FastAPI
+
+**AI:** Alibaba Cloud DashScope (Qwen • Wanxiang Wan)
+
+**Infrastructure:** Alibaba Cloud • ACK • RDS • OSS • SLB
+
+---
+
+## 📁 PROJECT STRUCTURE
 
 ```
 novai-platform/
 ├── apps/
-│   ├── web/                    # Next.js 14 frontend
-│   ├── api-gateway/            # Node.js Fastify API Gateway
-│   └── generation-service/     # Python FastAPI AI orchestration
+│   ├── web/                    # Next.js frontend
+│   ├── api-gateway/            # Node.js API
+│   └── generation-service/     # Python AI service
 ├── packages/
-│   ├── ui/                     # Shared React components
-│   ├── types/                  # Shared TypeScript types
-│   └── config/                 # Shared ESLint, TypeScript configs
+│   ├── types/                  # Shared types
+│   └── ui/                     # Shared components
 ├── infra/
-│   ├── terraform/              # Infrastructure as Code (GCP)
-│   ├── kubernetes/             # Kubernetes manifests
-│   └── helm/                   # Helm charts
+│   └── terraform/alicloud/     # Alibaba Cloud IaC
 ├── docs/                       # Documentation
-└── scripts/                    # Build/deploy scripts
+└── scripts/                    # Test/deploy scripts
 ```
 
-## 🛠️ Tech Stack
+---
 
-### Frontend
-- **Framework:** Next.js 14 (App Router, TypeScript)
-- **Styling:** Tailwind CSS + shadcn/ui
-- **State:** Zustand + React Query
-- **Animation:** Framer Motion
+## 🧪 TESTING
 
-### Backend
-- **API Gateway:** Node.js 20 + Fastify
-- **AI Service:** Python 3.11 + FastAPI
-- **Database:** PostgreSQL 15 (Cloud SQL)
-- **Cache:** Redis 7 (Memorystore)
-- **Queue:** BullMQ
-
-### Infrastructure
-- **Cloud:** Google Cloud Platform (GCP)
-- **Orchestration:** GKE (Kubernetes)
-- **CI/CD:** GitHub Actions + ArgoCD
-- **AI:** Google AI Studio (Veo 2, Imagen 3, Gemini)
-
-## 📚 Documentation
-
-- [Full SDLC Documentation](./docs/DOCUMENT.md)
-- [Execution Timeline](./docs/TIMELINE.md)
-- [API Documentation](./apps/api-gateway/README.md)
-- [Deployment Guide](./infra/README.md)
-
-## 🏃 Development
-
+### Run All Tests
 ```bash
-# Run all apps in development
-npm run dev
-
-# Run specific app
-npm run dev --filter=web
-npm run dev --filter=api-gateway
-
-# Build all
-npm run build
-
-# Run tests
-npm run test
-
-# Type check
-npm run typecheck
-
-# Lint
-npm run lint
+./scripts/test-api.sh
 ```
 
-## 🚢 Deployment
-
+### Test Individual Models
 ```bash
-# Build Docker images
-npm run docker:build
-
-# Push to registry
-npm run docker:push
-
-# Deploy to Kubernetes
-npm run k8s:deploy
+cd apps/generation-service
+python test_dashscope.py
 ```
 
-## 📋 Environment Variables
+### Interactive API Docs
+```bash
+# Start service
+python -m uvicorn src.main:app --reload
 
-See `.env.example` for required environment variables.
+# Open browser
+http://localhost:8000/docs
+```
 
-## 📄 License
+---
+
+## 📚 DOCUMENTATION
+
+| Document | Description |
+|----------|-------------|
+| [QUICK_START.md](./QUICK_START.md) | Get started in 5 minutes |
+| [docs/ALIBABA_CLOUD_SETUP.md](./docs/ALIBABA_CLOUD_SETUP.md) | Full Alibaba Cloud setup |
+| [docs/DOCUMENT.md](./docs/DOCUMENT.md) | SDLC documentation |
+| [docs/TIMELINE.md](./docs/TIMELINE.md) | Project timeline |
+
+---
+
+## 🔒 SECURITY
+
+⚠️ **IMPORTANT:**
+- `.env` file contains API key - **DO NOT COMMIT**
+- API key is excluded from Git via `.gitignore`
+- Rotate API key if exposed: [DashScope Console](https://dashscope.console.aliyun.com/apiKey)
+
+---
+
+## 💰 PRICING
+
+| Model | Price (USD) | Free Tier |
+|-------|-------------|-----------|
+| Text to Image | ~$0.04/image | 20 credits/month |
+| Text to Video | ~$0.50/video | Included |
+| Image to Video | ~$0.40/video | Included |
+| Text Generation | ~$0.004/1K tokens | Included |
+
+---
+
+## 🤝 CONTRIBUTING
+
+1. Fork the repository
+2. Create feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit changes (`git commit -m 'Add amazing feature'`)
+4. Push to branch (`git push origin feature/amazing-feature`)
+5. Open Pull Request
+
+---
+
+## 📞 SUPPORT
+
+- **Issues:** [GitHub Issues](https://github.com/rocxman/novai-platform/issues)
+- **Email:** support@novaai.id
+- **Docs:** [Documentation](./docs/)
+
+---
+
+## 📄 LICENSE
 
 Proprietary - All rights reserved.
 
 ---
 
-**NOVA AI Platform** • Powered by Google AI Studio
+**NOVA AI Platform** • Powered by Alibaba Cloud DashScope
+
+**© 2025 NOVA AI. All rights reserved.**
