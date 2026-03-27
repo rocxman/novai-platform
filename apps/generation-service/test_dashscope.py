@@ -52,8 +52,8 @@ async def test_api_key():
 
 
 async def test_text_generation():
-    """Test Qwen text generation."""
-    print("\n📝 Testing Text Generation (Qwen-Max)...")
+    """Test Qwen3 text generation."""
+    print("\n📝 Testing Text Generation (Qwen3-Max - Flagship)...")
     print("=" * 50)
     
     try:
@@ -62,7 +62,7 @@ async def test_text_generation():
                 f"{BASE_URL}/api/v1/services/aigc/text-generation/generation",
                 headers=HEADERS,
                 json={
-                    "model": "qwen-max",
+                    "model": "qwen3-max",
                     "input": {
                         "messages": [
                             {"role": "system", "content": "You are a helpful assistant."},
@@ -91,20 +91,20 @@ async def test_text_generation():
 
 
 async def test_text_to_image():
-    """Test Qwen-Image text to image generation."""
-    print("\n🎨 Testing Text to Image (Qwen-Image-2.0-Pro)...")
+    """Test Qwen-Image-Max text to image generation."""
+    print("\n🎨 Testing Text to Image (Qwen-Image-Max - Best for Text Rendering)...")
     print("=" * 50)
     
     try:
         async with httpx.AsyncClient(timeout=120.0) as client:
-            # Create task
+            # Use qwen-image-max for best quality with text rendering
             create_response = await client.post(
                 f"{BASE_URL}/api/v1/services/aigc/text2image/image-synthesis",
                 headers={**HEADERS, "X-DashScope-Async": "enable"},
                 json={
-                    "model": "qwen-image-2.0-pro",
+                    "model": "qwen-image-max",
                     "input": {
-                        "prompt": "A cute cat playing with a ball, photorealistic, high quality"
+                        "prompt": "A cute cat playing with a ball, photorealistic, high quality, detailed"
                     },
                     "parameters": {
                         "n": 1,
@@ -156,20 +156,20 @@ async def test_text_to_image():
 
 
 async def test_text_to_video():
-    """Test Wanxiang Wan text to video generation."""
-    print("\n🎬 Testing Text to Video (Wan2.6-T2V)...")
+    """Test Wan2.6-i2v text to video generation (supports 15s ultra-long)."""
+    print("\n🎬 Testing Text to Video (Wan2.6-i2v - Latest 15s Ultra-Long)...")
     print("=" * 50)
     
     try:
         async with httpx.AsyncClient(timeout=300.0) as client:
-            # Create task
+            # Use wan2.6-i2v - latest model with 15s support
             create_response = await client.post(
                 f"{BASE_URL}/api/v1/services/aigc/video-generation/video-synthesis",
                 headers={**HEADERS, "X-DashScope-Async": "enable"},
                 json={
-                    "model": "wan2.6-t2v",
+                    "model": "wan2.6-i2v",
                     "input": {
-                        "prompt": "A cat walking in the garden, realistic, high quality"
+                        "prompt": "A cat walking in the garden, realistic, high quality, smooth motion"
                     },
                     "parameters": {
                         "size": "1280*720",
@@ -223,11 +223,16 @@ async def test_text_to_video():
 async def main():
     """Run all tests."""
     print("\n" + "=" * 60)
-    print("🚀 NOVA AI - Alibaba Cloud DashScope API Test")
+    print("🚀 NOVA AI - Alibaba Cloud DashScope API Test (2026 Models)")
     print("=" * 60)
-    print(f"📍 Region: Singapore")
+    print(f"📍 Region: Singapore (Optimized for Free Tier)")
     print(f"🔑 API Key: sk-923407d300a844e08ed633a1be452b64")
     print(f"🕐 Time: {datetime.now().isoformat()}")
+    print("\n📦 Models Testing:")
+    print("  • Qwen3-Max (Text Generation - Flagship)")
+    print("  • Qwen-Image-Max (Text to Image - Best Quality)")
+    print("  • Wan2.6-i2v (Text/Video - 15s Ultra-Long)")
+    print("=" * 60)
     
     results = {
         "api_key_valid": await test_api_key(),

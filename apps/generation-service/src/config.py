@@ -23,18 +23,27 @@ class Settings(BaseSettings):
         }
         return urls.get(self.dashscope_region, urls["singapore"])
     
-    # AI Models - Alibaba Cloud
-    # Text to Image: Qwen-Image series
-    qwen_image_model: str = "qwen-image-2.0-pro"
+    # AI Models - Alibaba Cloud (2026 Free Tier Optimized)
+    # Text to Image: Qwen-Image-Max (best for text rendering in images)
+    qwen_image_model: str = "qwen-image-max"
     
-    # Text to Video: Wanxiang Wan series
-    wan_t2v_model: str = "wan2.6-t2v"
+    # Text to Video: Wan2.6-i2v (latest, supports 15s ultra-long)
+    wan_t2v_model: str = "wan2.6-i2v"
     
-    # Image to Video: Wanxiang Wan series
-    wan_i2v_model: str = "wan2.1-i2v"
+    # Image to Video: Wan2.6-i2v (same model, maintains facial details)
+    wan_i2v_model: str = "wan2.6-i2v"
     
-    # Text Generation: Qwen series
-    qwen_text_model: str = "qwen-max"
+    # Text Generation: Qwen3-Max (flagship for complex tasks)
+    qwen_text_model: str = "qwen3-max"
+    
+    # Alternative Fast Model: Qwen-Plus (balanced speed/intelligence)
+    qwen_fast_model: str = "qwen-plus"
+    
+    # Multimodal: Qwen3-VL-Plus (visual understanding)
+    qwen_vl_model: str = "qwen3-vl-plus"
+    
+    # Coding: Qwen3-Coder-Next (specialized for programming)
+    qwen_coder_model: str = "qwen3-coder-next"
     
     # Redis (for job queue)
     redis_url: str = "redis://localhost:6379"
