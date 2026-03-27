@@ -1,0 +1,43 @@
+{
+  "name": "novai-platform",
+  "version": "1.0.0",
+  "private": true,
+  "description": "NOVA AI Platform - AI-Powered Creative Generation",
+  "author": "NOVA AI Team",
+  "license": "PROPRIETARY",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "start": "turbo run start",
+    "lint": "turbo run lint",
+    "lint:fix": "turbo run lint:fix",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "test:coverage": "turbo run test:coverage",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "db:migrate": "turbo run db:migrate",
+    "db:seed": "turbo run db:seed",
+    "docker:build": "turbo run docker:build",
+    "docker:push": "turbo run docker:push",
+    "infra:plan": "cd infra/terraform && terraform plan",
+    "infra:apply": "cd infra/terraform && terraform apply",
+    "k8s:deploy": "kubectl apply -f infra/kubernetes/"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "eslint": "^8.56.0",
+    "prettier": "^3.2.0",
+    "turbo": "^1.12.0",
+    "typescript": "^5.3.0"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
+  },
+  "packageManager": "npm@10.0.0"
+}

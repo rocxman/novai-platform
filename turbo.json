@@ -1,0 +1,63 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": ["**/.env.*local"],
+  "pipeline": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "start": {
+      "dependsOn": ["build"]
+    },
+    "lint": {
+      "dependsOn": ["^build"]
+    },
+    "lint:fix": {
+      "dependsOn": ["^build"]
+    },
+    "typecheck": {
+      "dependsOn": ["^build"]
+    },
+    "test": {
+      "dependsOn": ["build"]
+    },
+    "test:coverage": {
+      "dependsOn": ["build"],
+      "outputs": ["coverage/**"]
+    },
+    "clean": {
+      "cache": false
+    },
+    "db:migrate": {
+      "cache": false
+    },
+    "db:seed": {
+      "cache": false,
+      "dependsOn": ["db:migrate"]
+    },
+    "docker:build": {
+      "dependsOn": ["build"]
+    },
+    "docker:push": {
+      "dependsOn": ["docker:build"]
+    }
+  },
+  "globalEnv": [
+    "NODE_ENV",
+    "DATABASE_URL",
+    "REDIS_URL",
+    "GOOGLE_AI_API_KEY",
+    "VERTEX_AI_PROJECT_ID",
+    "VERTEX_AI_LOCATION",
+    "GCS_BUCKET_NAME",
+    "JWT_SECRET",
+    "GOOGLE_CLIENT_ID",
+    "GOOGLE_CLIENT_SECRET",
+    "MIDTRANS_SERVER_KEY",
+    "MIDTRANS_CLIENT_KEY"
+  ]
+}
